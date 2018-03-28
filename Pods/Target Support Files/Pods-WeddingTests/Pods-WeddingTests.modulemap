@@ -1,0 +1,6 @@
+framework module Pods_WeddingTests {
+  umbrella header "Pods-WeddingTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
