@@ -24,6 +24,7 @@
 		968070DC206C4CBA009E80FB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070DB206C4CBA009E80FB /* Message.swift */; };
 		968070DE206C4CC5009E80FB /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070DD206C4CC5009E80FB /* Conversation.swift */; };
 		968070E2206C4DD8009E80FB /* UIHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070E1206C4DD8009E80FB /* UIHelpers.swift */; };
+		968070E5206C5407009E80FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 968070E4206C5407009E80FB /* GoogleService-Info.plist */; };
 		A6CB381F533958A6B6FA55C4 /* Pods_WeddingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5F4598D84C79B03D300DA1 /* Pods_WeddingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		968070DB206C4CBA009E80FB /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		968070DD206C4CC5009E80FB /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		968070E1206C4DD8009E80FB /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
+		968070E4206C5407009E80FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C45E943311B9E7F6BE7E065B /* Pods-Wedding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wedding.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wedding/Pods-Wedding.release.xcconfig"; sourceTree = "<group>"; };
 		DC3A8CBC2E91CCFBE9E97649 /* Pods-WeddingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBAAA0F22A0615F10D7D7441 /* Pods-WeddingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				968070E0206C4CDD009E80FB /* View */,
 				968070E3206C4DE7009E80FB /* Helpers */,
 				968070B8206C4B2F009E80FB /* Info.plist */,
+				968070E4206C5407009E80FB /* GoogleService-Info.plist */,
 				968070B0206C4B2E009E80FB /* Wedding.xcdatamodeld */,
 			);
 			path = Wedding;
@@ -280,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				968070B7206C4B2E009E80FB /* LaunchScreen.storyboard in Resources */,
+				968070E5206C5407009E80FB /* GoogleService-Info.plist in Resources */,
 				968070B4206C4B2E009E80FB /* Assets.xcassets in Resources */,
 				968070AF206C4B2E009E80FB /* Main.storyboard in Resources */,
 			);
