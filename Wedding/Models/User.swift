@@ -21,6 +21,7 @@ class User: NSObject {
   //MARK: Methods
   class func registerUser(withName: String, email: String, password: String, profilePic: UIImage, completion: @escaping (Bool) -> Swift.Void) {
     Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+      print(error)
       if error == nil {
         user?.sendEmailVerification(completion: nil)
         let storageRef = Storage.storage().reference().child("usersProfilePics").child(user!.uid)
