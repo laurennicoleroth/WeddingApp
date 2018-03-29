@@ -63,6 +63,7 @@
 		968070DD206C4CC5009E80FB /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		968070E1206C4DD8009E80FB /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
 		968070E4206C5407009E80FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		968070E6206C6E59009E80FB /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		C45E943311B9E7F6BE7E065B /* Pods-Wedding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wedding.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wedding/Pods-Wedding.release.xcconfig"; sourceTree = "<group>"; };
 		DC3A8CBC2E91CCFBE9E97649 /* Pods-WeddingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBAAA0F22A0615F10D7D7441 /* Pods-WeddingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		9680709D206C4B2E009E80FB = {
 			isa = PBXGroup;
 			children = (
+				968070E6206C6E59009E80FB /* Bridging-Header.h */,
 				968070A8206C4B2E009E80FB /* Wedding */,
 				968070C0206C4B2F009E80FB /* WeddingTests */,
 				968070A7206C4B2E009E80FB /* Products */,
@@ -586,6 +588,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurennicoleroth.Wedding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -602,6 +605,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurennicoleroth.Wedding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
