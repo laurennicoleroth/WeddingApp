@@ -15,7 +15,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
   
   lazy var rightButton: UIBarButtonItem = {
     let image = UIImage.init(named: "default profile")?.withRenderingMode(.alwaysOriginal)
-    let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ConversationsVC.showProfile))
+    let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ChatVC.showProfile))
     return button
   }()
   
@@ -71,6 +71,13 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
       }
     })
     Message.markMessagesRead(forUserID: self.currentUser!.id)
+  }
+  
+  //Shows profile extra view
+  @objc func showProfile() {
+    let info = ["viewType" : ShowExtraView.profile]
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showExtraView"), object: nil, userInfo: info)
+    self.inputView?.isHidden = true
   }
   
   //Hides current viewcontroller
