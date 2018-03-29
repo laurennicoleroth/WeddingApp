@@ -10,6 +10,8 @@ import UIKit
 
 class GroupChatVC: UIViewController {
   
+  @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var alertBottomConstraint: NSLayoutConstraint!
   lazy var leftButton: UIBarButtonItem = {
     let image = UIImage.init(named: "default profile")?.withRenderingMode(.alwaysOriginal)
     let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ConversationsVC.showProfile))
