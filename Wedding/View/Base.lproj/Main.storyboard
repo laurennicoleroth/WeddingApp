@@ -614,7 +614,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mUK-CG-8g6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1606" y="429"/>
+            <point key="canvasLocation" x="1644" y="-229"/>
+        </scene>
+        <!--Group ChatVC-->
+        <scene sceneID="OBa-bb-uzl">
+            <objects>
+                <viewController id="faQ-WJ-Z6X" customClass="GroupChatVC" customModule="Wedding" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Neu-ei-ofL"/>
+                        <viewControllerLayoutGuide type="bottom" id="k4X-Yl-pmX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f4T-cY-fL5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="2Ic-mK-hCB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CJa-5u-ZUq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1558" y="429"/>
         </scene>
         <!--Chat-->
         <scene sceneID="j8s-t8-l2W">
@@ -886,7 +905,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="2468" y="429"/>
+            <point key="canvasLocation" x="2375" y="-229"/>
         </scene>
         <!--NavVC-->
         <scene sceneID="bKx-7C-iuV">
@@ -910,7 +929,7 @@
                         <outlet property="profilePicView" destination="IWJ-sy-fGZ" id="bjE-T0-5VC"/>
                         <outlet property="profileView" destination="2Nn-Te-Y0c" id="ixc-Ty-XpU"/>
                         <outlet property="scrollView" destination="oRc-AA-MCG" id="mI4-Rm-xTP"/>
-                        <segue destination="UoK-02-tpp" kind="relationship" relationship="rootViewController" id="XsT-xv-uPT"/>
+                        <segue destination="faQ-WJ-Z6X" kind="relationship" relationship="rootViewController" id="f9h-x8-are"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldF-Du-mjs" userLabel="First Responder" sceneMemberID="firstResponder"/>
