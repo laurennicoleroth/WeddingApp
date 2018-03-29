@@ -13,7 +13,7 @@ import CoreLocation
 
 class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,  UINavigationControllerDelegate, UIImagePickerControllerDelegate, CLLocationManagerDelegate {
   
-  lazy var leftButton: UIBarButtonItem = {
+  lazy var rightButton: UIBarButtonItem = {
     let image = UIImage.init(named: "default profile")?.withRenderingMode(.alwaysOriginal)
     let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ConversationsVC.showProfile))
     return button
@@ -45,7 +45,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
   //MARK: Methods
   func customization() {
     self.imagePicker.delegate = self
-    self.navigationItem.leftBarButtonItem = self.leftButton
+    self.navigationItem.rightBarButtonItem = self.rightButton
     self.tableView.estimatedRowHeight = self.barHeight
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.contentInset.bottom = self.barHeight
