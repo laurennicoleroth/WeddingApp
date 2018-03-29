@@ -25,6 +25,7 @@
 		968070DE206C4CC5009E80FB /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070DD206C4CC5009E80FB /* Conversation.swift */; };
 		968070E2206C4DD8009E80FB /* UIHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070E1206C4DD8009E80FB /* UIHelpers.swift */; };
 		968070E5206C5407009E80FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 968070E4206C5407009E80FB /* GoogleService-Info.plist */; };
+		968070E8206C7230009E80FB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968070E7206C7230009E80FB /* MapKit.framework */; };
 		A6CB381F533958A6B6FA55C4 /* Pods_WeddingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5F4598D84C79B03D300DA1 /* Pods_WeddingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		968070E1206C4DD8009E80FB /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
 		968070E4206C5407009E80FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		968070E6206C6E59009E80FB /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		968070E7206C7230009E80FB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C45E943311B9E7F6BE7E065B /* Pods-Wedding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wedding.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wedding/Pods-Wedding.release.xcconfig"; sourceTree = "<group>"; };
 		DC3A8CBC2E91CCFBE9E97649 /* Pods-WeddingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBAAA0F22A0615F10D7D7441 /* Pods-WeddingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				968070E8206C7230009E80FB /* MapKit.framework in Frameworks */,
 				37FFC068A58E33367A34A05C /* Pods_Wedding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,6 +181,7 @@
 		9FB6316C178044EB9E598DBF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				968070E7206C7230009E80FB /* MapKit.framework */,
 				519AA1A0404AE1C76B936295 /* Pods_Wedding.framework */,
 				7B5F4598D84C79B03D300DA1 /* Pods_WeddingTests.framework */,
 			);
@@ -252,6 +256,11 @@
 					968070A5206C4B2E009E80FB = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					968070BC206C4B2F009E80FB = {
 						CreatedOnToolsVersion = 9.2;
