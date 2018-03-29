@@ -146,8 +146,8 @@
 				968070CC206C4B7D009E80FB /* LandingVC.swift */,
 				968070CF206C4BBC009E80FB /* WelcomeVC.swift */,
 				968070D1206C4BD2009E80FB /* NavVC.swift */,
-				968070D3206C4BE5009E80FB /* ConversationsVC.swift */,
 				968070D5206C4BF9009E80FB /* ChatVC.swift */,
+				968070D3206C4BE5009E80FB /* ConversationsVC.swift */,
 				968070D7206C4C2F009E80FB /* VCCells.swift */,
 			);
 			path = Controllers;
