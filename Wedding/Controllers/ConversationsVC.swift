@@ -21,6 +21,7 @@ class ConversationsVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     return button
   }()
   var items = [Conversation]()
+  var messages = [Message]()
   var selectedUser: User?
   
   //MARK: Methods

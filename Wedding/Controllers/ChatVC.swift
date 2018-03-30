@@ -53,6 +53,9 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
   
   //Downloads messages
   func fetchData() {
+    
+    print("Fetching data for the current user:", currentUser!.email)
+    
     Message.downloadAllMessages(forUserID: self.currentUser!.id, completion: {[weak weakSelf = self] (message) in
       weakSelf?.items.append(message)
       weakSelf?.items.sort{ $0.timestamp < $1.timestamp }
