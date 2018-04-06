@@ -17,7 +17,6 @@
 		968070CD206C4B7D009E80FB /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070CC206C4B7D009E80FB /* LandingVC.swift */; };
 		968070D0206C4BBC009E80FB /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070CF206C4BBC009E80FB /* WelcomeVC.swift */; };
 		968070D2206C4BD2009E80FB /* NavVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D1206C4BD2009E80FB /* NavVC.swift */; };
-		968070D4206C4BE5009E80FB /* ConversationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D3206C4BE5009E80FB /* ConversationsVC.swift */; };
 		968070D6206C4BF9009E80FB /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D5206C4BF9009E80FB /* ChatVC.swift */; };
 		968070D8206C4C2F009E80FB /* VCCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D7206C4C2F009E80FB /* VCCells.swift */; };
 		968070DA206C4CAA009E80FB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D9206C4CAA009E80FB /* User.swift */; };
@@ -60,7 +59,6 @@
 		968070CC206C4B7D009E80FB /* LandingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
 		968070CF206C4BBC009E80FB /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
 		968070D1206C4BD2009E80FB /* NavVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavVC.swift; sourceTree = "<group>"; };
-		968070D3206C4BE5009E80FB /* ConversationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsVC.swift; sourceTree = "<group>"; };
 		968070D5206C4BF9009E80FB /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		968070D7206C4C2F009E80FB /* VCCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCCells.swift; sourceTree = "<group>"; };
 		968070D9206C4CAA009E80FB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -150,10 +148,9 @@
 				968070CC206C4B7D009E80FB /* LandingVC.swift */,
 				968070CF206C4BBC009E80FB /* WelcomeVC.swift */,
 				968070D1206C4BD2009E80FB /* NavVC.swift */,
-				968070D3206C4BE5009E80FB /* ConversationsVC.swift */,
+				96AF06AE207800AF00FC66A9 /* ChannelListVC.swift */,
 				968070D5206C4BF9009E80FB /* ChatVC.swift */,
 				968070D7206C4C2F009E80FB /* VCCells.swift */,
-				96AF06AE207800AF00FC66A9 /* ChannelListVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -452,7 +449,6 @@
 				968070B2206C4B2E009E80FB /* Wedding.xcdatamodeld in Sources */,
 				968070DC206C4CBA009E80FB /* Message.swift in Sources */,
 				968070D0206C4BBC009E80FB /* WelcomeVC.swift in Sources */,
-				968070D4206C4BE5009E80FB /* ConversationsVC.swift in Sources */,
 				96AF06B12078015700FC66A9 /* CreateChannelCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

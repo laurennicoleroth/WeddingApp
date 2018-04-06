@@ -41,5 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>This app needs access to your photo library so you can post photos from it.</string>
+  <key>DATABASE_URL</key>
+  <string>https://wedding-lnr.firebaseio.com/</string>
 </dict>
 </plist>

@@ -10,6 +10,7 @@ import Foundation
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 enum Section: Int {
   case createNewChannelSection = 0
@@ -22,6 +23,12 @@ class ChannelListViewController: UITableViewController {
   var senderDisplayName: String?
   var newChannelTextField: UITextField?
   
+  lazy var leftButton: UIBarButtonItem = {
+    let image = UIImage.init(named: "default profile")?.withRenderingMode(.alwaysOriginal)
+    let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ChannelListViewController.showProfile))
+    return button
+  }()
+  
   private var channelRefHandle: DatabaseHandle?
   private var channels: [Channel] = []
   
@@ -31,7 +38,11 @@ class ChannelListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "Wedding Party"
+    
+    print(Auth.auth().currentUser?.displayName, "is logged in")
+    
+    customization()
+    
     observeChannels()
   }
   
@@ -41,8 +52,15 @@ class ChannelListViewController: UITableViewController {
     }
   }
   
-  // MARK :Actions
+  //MARK : Methods
   
+  func customization() {
+    title = "Wedding Party"
+
+    self.navigationItem.leftBarButtonItem = self.leftButton
+  }
+  
+  // MARK :Actions
   @IBAction func createChannel(_ sender: AnyObject) {
     if let name = newChannelTextField?.text {
       let newChannelRef = channelRef.childByAutoId()
@@ -61,7 +79,7 @@ class ChannelListViewController: UITableViewController {
     channelRefHandle = channelRef.observe(.childAdded, with: { (snapshot) -> Void in
       let channelData = snapshot.value as! Dictionary<String, AnyObject>
       let id = snapshot.key
-      if let name = channelData["name"] as! String!, name.characters.count > 0 {
+      if let name = channelData["name"] as! String!, name.count > 0 {
         self.channels.append(Channel(id: id, name: name))
         self.tableView.reloadData()
       } else {
@@ -71,17 +89,28 @@ class ChannelListViewController: UITableViewController {
   }
   
   // MARK: Navigation
-  
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     super.prepare(for: segue, sender: sender)
     
     if let channel = sender as? Channel {
       let chatVc = segue.destination as! ChatVC
+ 
+      if let currentUserName = Auth.auth().currentUser?.displayName {
+        chatVc.senderDisplayName = currentUserName
+      } else {
+        chatVc.senderDisplayName = "Not Set"
+      }
       
-      chatVc.senderDisplayName = senderDisplayName
       chatVc.channel = channel
       chatVc.channelRef = channelRef.child(channel.id)
     }
+  }
+  
+  //Shows profile extra view
+  @objc func showProfile() {
+    let info = ["viewType" : ShowExtraView.profile]
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showExtraView"), object: nil, userInfo: info)
+    self.inputView?.isHidden = true
   }
   
   // MARK: UITableViewDataSource
