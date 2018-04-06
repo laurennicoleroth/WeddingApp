@@ -20,6 +20,7 @@ class ConversationsVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ConversationsVC.showProfile))
     return button
   }()
+  
   var items = [Conversation]()
   var messages = [Message]()
   var selectedUser: User?
@@ -63,19 +64,22 @@ class ConversationsVC: UIViewController, UITableViewDelegate, UITableViewDataSou
   
   //Downloads conversations
   func fetchData() {
-    Conversation.showConversations { (conversations) in
-      self.items = conversations
-      self.items.sort{ $0.lastMessage.timestamp > $1.lastMessage.timestamp }
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
-        for conversation in self.items {
-          if conversation.lastMessage.isRead == false {
-            self.playSound()
-            break
-          }
-        }
-      }
+    Party.showMessages { (messages) in
+      
     }
+//    Conversation.showConversations { (conversations) in
+//      self.items = conversations
+//      self.items.sort{ $0.lastMessage.timestamp > $1.lastMessage.timestamp }
+//      DispatchQueue.main.async {
+//        self.tableView.reloadData()
+//        for conversation in self.items {
+//          if conversation.lastMessage.isRead == false {
+//            self.playSound()
+//            break
+//          }
+//        }
+//      }
+//    }
   }
   
   //Shows profile extra view

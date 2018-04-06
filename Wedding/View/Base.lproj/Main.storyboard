@@ -609,12 +609,11 @@
                     <connections>
                         <outlet property="alertBottomConstraint" destination="1Rg-Ry-AA5" id="QJG-EI-WP4"/>
                         <outlet property="tableView" destination="Plb-lE-iQb" id="fbw-5y-CY2"/>
-                        <segue destination="j4r-Rx-g1K" kind="show" identifier="segue" id="Th6-3L-hdh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mUK-CG-8g6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1606" y="429"/>
+            <point key="canvasLocation" x="1612" y="1101"/>
         </scene>
         <!--Chat-->
         <scene sceneID="j8s-t8-l2W">
@@ -739,6 +738,7 @@
                             <constraint firstItem="0I1-tm-nYA" firstAttribute="leading" secondItem="Hp0-e2-dDk" secondAttribute="leading" id="zHu-Uu-jzA"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="l42-oY-9F9"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="bottomConstraint" destination="NTK-xm-Tvz" id="WRP-hN-vRz"/>
@@ -886,7 +886,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="2468" y="429"/>
+            <point key="canvasLocation" x="1649" y="429"/>
         </scene>
         <!--NavVC-->
         <scene sceneID="bKx-7C-iuV">
@@ -910,7 +910,7 @@
                         <outlet property="profilePicView" destination="IWJ-sy-fGZ" id="bjE-T0-5VC"/>
                         <outlet property="profileView" destination="2Nn-Te-Y0c" id="ixc-Ty-XpU"/>
                         <outlet property="scrollView" destination="oRc-AA-MCG" id="mI4-Rm-xTP"/>
-                        <segue destination="UoK-02-tpp" kind="relationship" relationship="rootViewController" id="XsT-xv-uPT"/>
+                        <segue destination="j4r-Rx-g1K" kind="relationship" relationship="rootViewController" id="Kiu-wm-Zh8"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldF-Du-mjs" userLabel="First Responder" sceneMemberID="firstResponder"/>
