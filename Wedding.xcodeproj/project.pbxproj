@@ -17,7 +17,6 @@
 		968070CD206C4B7D009E80FB /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070CC206C4B7D009E80FB /* LandingVC.swift */; };
 		968070D0206C4BBC009E80FB /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070CF206C4BBC009E80FB /* WelcomeVC.swift */; };
 		968070D2206C4BD2009E80FB /* NavVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D1206C4BD2009E80FB /* NavVC.swift */; };
-		968070D4206C4BE5009E80FB /* ConversationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D3206C4BE5009E80FB /* ConversationsVC.swift */; };
 		968070D6206C4BF9009E80FB /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D5206C4BF9009E80FB /* ChatVC.swift */; };
 		968070D8206C4C2F009E80FB /* VCCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D7206C4C2F009E80FB /* VCCells.swift */; };
 		968070DA206C4CAA009E80FB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968070D9206C4CAA009E80FB /* User.swift */; };
@@ -27,6 +26,9 @@
 		968070E5206C5407009E80FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 968070E4206C5407009E80FB /* GoogleService-Info.plist */; };
 		968070E8206C7230009E80FB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968070E7206C7230009E80FB /* MapKit.framework */; };
 		968070EA206C73D3009E80FB /* newMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 968070E9206C73D3009E80FB /* newMessage.wav */; };
+		96AF06AD2078002E00FC66A9 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AF06AC2078002E00FC66A9 /* Channel.swift */; };
+		96AF06AF207800AF00FC66A9 /* ChannelListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AF06AE207800AF00FC66A9 /* ChannelListVC.swift */; };
+		96AF06B12078015700FC66A9 /* CreateChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AF06B02078015700FC66A9 /* CreateChannelCell.swift */; };
 		A6CB381F533958A6B6FA55C4 /* Pods_WeddingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5F4598D84C79B03D300DA1 /* Pods_WeddingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +59,6 @@
 		968070CC206C4B7D009E80FB /* LandingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
 		968070CF206C4BBC009E80FB /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
 		968070D1206C4BD2009E80FB /* NavVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavVC.swift; sourceTree = "<group>"; };
-		968070D3206C4BE5009E80FB /* ConversationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsVC.swift; sourceTree = "<group>"; };
 		968070D5206C4BF9009E80FB /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		968070D7206C4C2F009E80FB /* VCCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCCells.swift; sourceTree = "<group>"; };
 		968070D9206C4CAA009E80FB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -65,9 +66,11 @@
 		968070DD206C4CC5009E80FB /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		968070E1206C4DD8009E80FB /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
 		968070E4206C5407009E80FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		968070E6206C6E59009E80FB /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		968070E7206C7230009E80FB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		968070E9206C73D3009E80FB /* newMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = newMessage.wav; sourceTree = "<group>"; };
+		96AF06AC2078002E00FC66A9 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		96AF06AE207800AF00FC66A9 /* ChannelListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListVC.swift; sourceTree = "<group>"; };
+		96AF06B02078015700FC66A9 /* CreateChannelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChannelCell.swift; sourceTree = "<group>"; };
 		C45E943311B9E7F6BE7E065B /* Pods-Wedding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wedding.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wedding/Pods-Wedding.release.xcconfig"; sourceTree = "<group>"; };
 		DC3A8CBC2E91CCFBE9E97649 /* Pods-WeddingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBAAA0F22A0615F10D7D7441 /* Pods-WeddingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeddingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeddingTests/Pods-WeddingTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,7 +100,6 @@
 		9680709D206C4B2E009E80FB = {
 			isa = PBXGroup;
 			children = (
-				968070E6206C6E59009E80FB /* Bridging-Header.h */,
 				968070A8206C4B2E009E80FB /* Wedding */,
 				968070C0206C4B2F009E80FB /* WeddingTests */,
 				968070A7206C4B2E009E80FB /* Products */,
@@ -146,7 +148,7 @@
 				968070CC206C4B7D009E80FB /* LandingVC.swift */,
 				968070CF206C4BBC009E80FB /* WelcomeVC.swift */,
 				968070D1206C4BD2009E80FB /* NavVC.swift */,
-				968070D3206C4BE5009E80FB /* ConversationsVC.swift */,
+				96AF06AE207800AF00FC66A9 /* ChannelListVC.swift */,
 				968070D5206C4BF9009E80FB /* ChatVC.swift */,
 				968070D7206C4C2F009E80FB /* VCCells.swift */,
 			);
@@ -159,6 +161,7 @@
 				968070D9206C4CAA009E80FB /* User.swift */,
 				968070DB206C4CBA009E80FB /* Message.swift */,
 				968070DD206C4CC5009E80FB /* Conversation.swift */,
+				96AF06AC2078002E00FC66A9 /* Channel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				968070E1206C4DD8009E80FB /* UIHelpers.swift */,
+				96AF06B02078015700FC66A9 /* CreateChannelCell.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -340,6 +344,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -349,6 +354,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -432,7 +438,9 @@
 			files = (
 				968070CD206C4B7D009E80FB /* LandingVC.swift in Sources */,
 				968070D6206C4BF9009E80FB /* ChatVC.swift in Sources */,
+				96AF06AF207800AF00FC66A9 /* ChannelListVC.swift in Sources */,
 				968070D2206C4BD2009E80FB /* NavVC.swift in Sources */,
+				96AF06AD2078002E00FC66A9 /* Channel.swift in Sources */,
 				968070E2206C4DD8009E80FB /* UIHelpers.swift in Sources */,
 				968070AA206C4B2E009E80FB /* AppDelegate.swift in Sources */,
 				968070D8206C4C2F009E80FB /* VCCells.swift in Sources */,
@@ -441,7 +449,7 @@
 				968070B2206C4B2E009E80FB /* Wedding.xcdatamodeld in Sources */,
 				968070DC206C4CBA009E80FB /* Message.swift in Sources */,
 				968070D0206C4BBC009E80FB /* WelcomeVC.swift in Sources */,
-				968070D4206C4BE5009E80FB /* ConversationsVC.swift in Sources */,
+				96AF06B12078015700FC66A9 /* CreateChannelCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,7 +609,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurennicoleroth.Wedding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -618,7 +626,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurennicoleroth.Wedding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

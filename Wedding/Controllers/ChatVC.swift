@@ -9,296 +9,356 @@
 import UIKit
 import Photos
 import Firebase
-import CoreLocation
+import JSQMessagesViewController
 
-class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,  UINavigationControllerDelegate, UIImagePickerControllerDelegate, CLLocationManagerDelegate {
+final class ChatVC: JSQMessagesViewController {
   
-  //MARK: Properties
-  @IBOutlet var inputBar: UIView!
-  @IBOutlet weak var tableView: UITableView!
-  @IBOutlet weak var inputTextField: UITextField!
-  @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-  override var inputAccessoryView: UIView? {
-    get {
-      self.inputBar.frame.size.height = self.barHeight
-      self.inputBar.clipsToBounds = true
-      return self.inputBar
+  // MARK: Properties
+  private let imageURLNotSetKey = "NOTSET"
+  
+  var channelRef: DatabaseReference?
+  
+  private lazy var messageRef: DatabaseReference = self.channelRef!.child("messages")
+  
+  fileprivate lazy var storageRef: StorageReference = Storage.storage().reference(forURL: "gs://wedding-lnr.appspot.com/")
+  private lazy var userIsTypingRef: DatabaseReference = self.channelRef!.child("typingIndicator").child(self.senderId)
+  private lazy var usersTypingQuery: DatabaseQuery = self.channelRef!.child("typingIndicator").queryOrderedByValue().queryEqual(toValue: true)
+  
+  private var newMessageRefHandle: DatabaseHandle?
+  private var updatedMessageRefHandle: DatabaseHandle?
+  
+  private var messages: [JSQMessage] = []
+  private var photoMessageMap = [String: JSQPhotoMediaItem]()
+  
+  private var localTyping = false
+  var channel: Channel? {
+    didSet {
+      title = channel?.name
     }
   }
-  override var canBecomeFirstResponder: Bool{
-    return true
-  }
-  let locationManager = CLLocationManager()
-  var items = [Message]()
-  let imagePicker = UIImagePickerController()
-  let barHeight: CGFloat = 50
-  var currentUser: User?
-  var canSendLocation = true
   
-  
-  //MARK: Methods
-  func customization() {
-    self.imagePicker.delegate = self
-    self.tableView.estimatedRowHeight = self.barHeight
-    self.tableView.rowHeight = UITableViewAutomaticDimension
-    self.tableView.contentInset.bottom = self.barHeight
-    self.tableView.scrollIndicatorInsets.bottom = self.barHeight
-    self.navigationItem.title = self.currentUser?.name
-    self.navigationItem.setHidesBackButton(true, animated: false)
-    let icon = UIImage.init(named: "back")?.withRenderingMode(.alwaysOriginal)
-    let backButton = UIBarButtonItem.init(image: icon!, style: .plain, target: self, action: #selector(self.dismissSelf))
-    self.navigationItem.leftBarButtonItem = backButton
-    self.locationManager.delegate = self
+  var isTyping: Bool {
+    get {
+      return localTyping
+    }
+    set {
+      localTyping = newValue
+      userIsTypingRef.setValue(newValue)
+    }
   }
   
-  //Downloads messages
-  func fetchData() {
-    Message.downloadAllMessages(forUserID: self.currentUser!.id, completion: {[weak weakSelf = self] (message) in
-      weakSelf?.items.append(message)
-      weakSelf?.items.sort{ $0.timestamp < $1.timestamp }
-      DispatchQueue.main.async {
-        if let state = weakSelf?.items.isEmpty, state == false {
-          weakSelf?.tableView.reloadData()
-          weakSelf?.tableView.scrollToRow(at: IndexPath.init(row: self.items.count - 1, section: 0), at: .bottom, animated: false)
+  lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
+  lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
+  
+  // MARK: View Lifecycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.senderId = Auth.auth().currentUser?.uid
+    observeMessages()
+    
+    // No avatars
+    collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+    collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    observeTyping()
+  }
+  
+  deinit {
+    if let refHandle = newMessageRefHandle {
+      messageRef.removeObserver(withHandle: refHandle)
+    }
+    if let refHandle = updatedMessageRefHandle {
+      messageRef.removeObserver(withHandle: refHandle)
+    }
+  }
+  
+  // MARK: Collection view data source (and related) methods
+  
+  override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
+    return messages[indexPath.item]
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return messages.count
+  }
+  
+  override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
+    let message = messages[indexPath.item] // 1
+    if message.senderId == senderId { // 2
+      return outgoingBubbleImageView
+    } else { // 3
+      return incomingBubbleImageView
+    }
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
+    
+    let message = messages[indexPath.item]
+    
+    if message.senderId == senderId { // 1
+      cell.textView?.textColor = UIColor.white // 2
+    } else {
+      cell.textView?.textColor = UIColor.black // 3
+    }
+    
+    return cell
+  }
+  
+  override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+    return nil
+  }
+  
+  override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
+    return 15
+  }
+  
+  override func collectionView(_ collectionView: JSQMessagesCollectionView?, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString? {
+    let message = messages[indexPath.item]
+    switch message.senderId {
+    case senderId:
+      return nil
+    default:
+      guard let senderDisplayName = message.senderDisplayName else {
+        assertionFailure()
+        return nil
+      }
+      return NSAttributedString(string: senderDisplayName)
+    }
+  }
+  
+  // MARK: Firebase related methods
+  
+  private func observeMessages() {
+    messageRef = channelRef!.child("messages")
+    let messageQuery = messageRef.queryLimited(toLast:25)
+    
+    // We can use the observe method to listen for new
+    // messages being written to the Firebase DB
+    newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+      let messageData = snapshot.value as! Dictionary<String, String>
+      
+      if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
+        self.addMessage(withId: id, name: name, text: text)
+        self.finishReceivingMessage()
+      } else if let id = messageData["senderId"] as String!, let photoURL = messageData["photoURL"] as String! {
+        if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
+          self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem)
+          
+          if photoURL.hasPrefix("gs://") {
+            self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
+          }
+        }
+      } else {
+        print("Error! Could not decode message data")
+      }
+    })
+    
+    // We can also use the observer method to listen for
+    // changes to existing messages.
+    // We use this to be notified when a photo has been stored
+    // to the Firebase Storage, so we can update the message data
+    updatedMessageRefHandle = messageRef.observe(.childChanged, with: { (snapshot) in
+      let key = snapshot.key
+      let messageData = snapshot.value as! Dictionary<String, String>
+      
+      if let photoURL = messageData["photoURL"] as String! {
+        // The photo has been updated.
+        if let mediaItem = self.photoMessageMap[key] {
+          self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: key)
         }
       }
     })
-    Message.markMessagesRead(forUserID: self.currentUser!.id)
   }
   
-  //Hides current viewcontroller
-  @objc func dismissSelf() {
-    if let navController = self.navigationController {
-      navController.popViewController(animated: true)
-    }
-  }
-  
-  func composeMessage(type: MessageType, content: Any)  {
-    let message = Message.init(type: type, content: content, owner: .sender, timestamp: Int(Date().timeIntervalSince1970), isRead: false)
-    Message.send(message: message, toID: self.currentUser!.id, completion: {(_) in
-    })
-  }
-  
-  func checkLocationPermission() -> Bool {
-    var state = false
-    switch CLLocationManager.authorizationStatus() {
-    case .authorizedWhenInUse:
-      state = true
-    case .authorizedAlways:
-      state = true
-    default: break
-    }
-    return state
-  }
-  
-  func animateExtraButtons(toHide: Bool)  {
-    switch toHide {
-    case true:
-      self.bottomConstraint.constant = 0
-      UIView.animate(withDuration: 0.3) {
-        self.inputBar.layoutIfNeeded()
-      }
-    default:
-      self.bottomConstraint.constant = -50
-      UIView.animate(withDuration: 0.3) {
-        self.inputBar.layoutIfNeeded()
-      }
-    }
-  }
-  
-  @IBAction func showMessage(_ sender: Any) {
-    self.animateExtraButtons(toHide: true)
-  }
-  
-  @IBAction func selectGallery(_ sender: Any) {
-    self.animateExtraButtons(toHide: true)
-    let status = PHPhotoLibrary.authorizationStatus()
-    if (status == .authorized || status == .notDetermined) {
-      self.imagePicker.sourceType = .savedPhotosAlbum;
-      self.present(self.imagePicker, animated: true, completion: nil)
-    }
+  private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem, clearsPhotoMessageMapOnSuccessForKey key: String?) {
+    let storageRef = Storage.storage().reference(forURL: photoURL)
     
-  }
-  
-  @IBAction func selectCamera(_ sender: Any) {
-    self.animateExtraButtons(toHide: true)
-    let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
-    if (status == .authorized || status == .notDetermined) {
-      self.imagePicker.sourceType = .camera
-      self.imagePicker.allowsEditing = false
-      self.present(self.imagePicker, animated: true, completion: nil)
-    }
-  }
-  
-  @IBAction func selectLocation(_ sender: Any) {
-    self.canSendLocation = true
-    self.animateExtraButtons(toHide: true)
-    if self.checkLocationPermission() {
-      self.locationManager.startUpdatingLocation()
-    } else {
-      self.locationManager.requestWhenInUseAuthorization()
-    }
-  }
-  
-  @IBAction func showOptions(_ sender: Any) {
-    self.animateExtraButtons(toHide: false)
-  }
-  
-  @IBAction func sendMessage(_ sender: Any) {
-    if let text = self.inputTextField.text {
-      if text.characters.count > 0 {
-        self.composeMessage(type: .text, content: self.inputTextField.text!)
-        self.inputTextField.text = ""
+    storageRef.getData(maxSize: INT64_MAX){ (data, error) in
+      if let error = error {
+        print("Error downloading image data: \(error)")
+        return
       }
-    }
-  }
-  
-  //MARK: NotificationCenter handlers
-  @objc func showKeyboard(notification: Notification) {
-    if let frame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue {
-      let height = frame.cgRectValue.height
-      self.tableView.contentInset.bottom = height
-      self.tableView.scrollIndicatorInsets.bottom = height
-      if self.items.count > 0 {
-        self.tableView.scrollToRow(at: IndexPath.init(row: self.items.count - 1, section: 0), at: .bottom, animated: true)
-      }
-    }
-  }
-  
-  //MARK: Delegates
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.items.count
-  }
-  
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if tableView.isDragging {
-      cell.transform = CGAffineTransform.init(scaleX: 0.5, y: 0.5)
-      UIView.animate(withDuration: 0.3, animations: {
-        cell.transform = CGAffineTransform.identity
+      
+      storageRef.getMetadata(completion: { (metadata, metadataErr) in
+        if let error = metadataErr {
+          print("Error downloading metadata: \(error)")
+          return
+        }
+        
+        if (metadata?.contentType == "image/gif") {
+          mediaItem.image = UIImage(data: data!)
+        } else {
+          mediaItem.image = UIImage.init(data: data!)
+        }
+        self.collectionView.reloadData()
+        
+        guard key != nil else {
+          return
+        }
+        self.photoMessageMap.removeValue(forKey: key!)
       })
     }
   }
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch self.items[indexPath.row].owner {
-    case .receiver:
-      let cell = tableView.dequeueReusableCell(withIdentifier: "Receiver", for: indexPath) as! ReceiverCell
-      cell.clearCellData()
-      switch self.items[indexPath.row].type {
-      case .text:
-        cell.message.text = self.items[indexPath.row].content as! String
-      case .photo:
-        if let image = self.items[indexPath.row].image {
-          cell.messageBackground.image = image
-          cell.message.isHidden = true
-        } else {
-          cell.messageBackground.image = UIImage.init(named: "loading")
-          self.items[indexPath.row].downloadImage(indexpathRow: indexPath.row, completion: { (state, index) in
-            if state == true {
-              DispatchQueue.main.async {
-                self.tableView.reloadData()
-              }
-            }
-          })
-        }
-      case .location:
-        cell.messageBackground.image = UIImage.init(named: "location")
-        cell.message.isHidden = true
+  private func observeTyping() {
+    let typingIndicatorRef = channelRef!.child("typingIndicator")
+    userIsTypingRef = typingIndicatorRef.child(senderId)
+    userIsTypingRef.onDisconnectRemoveValue()
+    usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqual(toValue: true)
+    
+    usersTypingQuery.observe(.value) { (data: DataSnapshot) in
+      
+      // You're the only typing, don't show the indicator
+      if data.childrenCount == 1 && self.isTyping {
+        return
       }
-      return cell
-    case .sender:
-      let cell = tableView.dequeueReusableCell(withIdentifier: "Sender", for: indexPath) as! SenderCell
-      cell.clearCellData()
-      cell.profilePic.image = self.currentUser?.profilePic
-      switch self.items[indexPath.row].type {
-      case .text:
-        cell.message.text = self.items[indexPath.row].content as! String
-      case .photo:
-        if let image = self.items[indexPath.row].image {
-          cell.messageBackground.image = image
-          cell.message.isHidden = true
-        } else {
-          cell.messageBackground.image = UIImage.init(named: "loading")
-          self.items[indexPath.row].downloadImage(indexpathRow: indexPath.row, completion: { (state, index) in
-            if state == true {
-              DispatchQueue.main.async {
-                self.tableView.reloadData()
-              }
-            }
-          })
-        }
-      case .location:
-        cell.messageBackground.image = UIImage.init(named: "location")
-        cell.message.isHidden = true
-      }
-      return cell
+      
+      // Are there others typing?
+      self.showTypingIndicator = data.childrenCount > 0
+      self.scrollToBottom(animated: true)
     }
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.inputTextField.resignFirstResponder()
-    switch self.items[indexPath.row].type {
-    case .photo:
-      if let photo = self.items[indexPath.row].image {
-        let info = ["viewType" : ShowExtraView.preview, "pic": photo] as [String : Any]
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showExtraView"), object: nil, userInfo: info)
-        self.inputAccessoryView?.isHidden = true
-      }
-    case .location:
-      let coordinates = (self.items[indexPath.row].content as! String).components(separatedBy: ":")
-      let location = CLLocationCoordinate2D.init(latitude: CLLocationDegrees(coordinates[0])!, longitude: CLLocationDegrees(coordinates[1])!)
-      let info = ["viewType" : ShowExtraView.map, "location": location] as [String : Any]
-      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showExtraView"), object: nil, userInfo: info)
-      self.inputAccessoryView?.isHidden = true
-    default: break
-    }
+  override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+    // 1
+    let itemRef = messageRef.childByAutoId()
+    
+    // 2
+    let messageItem = [
+      "senderId": senderId!,
+      "senderName": senderDisplayName!,
+      "text": text!,
+      ]
+    
+    // 3
+    itemRef.setValue(messageItem)
+    
+    // 4
+    JSQSystemSoundPlayer.jsq_playMessageSentSound()
+    
+    // 5
+    finishSendingMessage()
+    isTyping = false
   }
   
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
+  func sendPhotoMessage() -> String? {
+    let itemRef = messageRef.childByAutoId()
+    
+    let messageItem = [
+      "photoURL": imageURLNotSetKey,
+      "senderId": senderId!,
+      ]
+    
+    itemRef.setValue(messageItem)
+    
+    JSQSystemSoundPlayer.jsq_playMessageSentSound()
+    
+    finishSendingMessage()
+    return itemRef.key
   }
   
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-    if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-      self.composeMessage(type: .photo, content: pickedImage)
+  func setImageURL(_ url: String, forPhotoMessageWithKey key: String) {
+    let itemRef = messageRef.child(key)
+    itemRef.updateChildValues(["photoURL": url])
+  }
+  
+  // MARK: UI and User Interaction
+  
+  private func setupOutgoingBubble() -> JSQMessagesBubbleImage {
+    let bubbleImageFactory = JSQMessagesBubbleImageFactory()
+    return bubbleImageFactory!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+  }
+  
+  private func setupIncomingBubble() -> JSQMessagesBubbleImage {
+    let bubbleImageFactory = JSQMessagesBubbleImageFactory()
+    return bubbleImageFactory!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
+  }
+  
+  override func didPressAccessoryButton(_ sender: UIButton) {
+    let picker = UIImagePickerController()
+    picker.delegate = self
+    if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
+      picker.sourceType = UIImagePickerControllerSourceType.camera
     } else {
-      let pickedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-      self.composeMessage(type: .photo, content: pickedImage)
+      picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
     }
-    picker.dismiss(animated: true, completion: nil)
+    
+    present(picker, animated: true, completion:nil)
   }
   
-  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    self.locationManager.stopUpdatingLocation()
-    if let lastLocation = locations.last {
-      if self.canSendLocation {
-        let coordinate = String(lastLocation.coordinate.latitude) + ":" + String(lastLocation.coordinate.longitude)
-        let message = Message.init(type: .location, content: coordinate, owner: .sender, timestamp: Int(Date().timeIntervalSince1970), isRead: false)
-        Message.send(message: message, toID: self.currentUser!.id, completion: {(_) in
-        })
-        self.canSendLocation = false
+  private func addMessage(withId id: String, name: String, text: String) {
+    if let message = JSQMessage(senderId: id, displayName: name, text: text) {
+      messages.append(message)
+    }
+  }
+  
+  private func addPhotoMessage(withId id: String, key: String, mediaItem: JSQPhotoMediaItem) {
+    if let message = JSQMessage(senderId: id, displayName: "", media: mediaItem) {
+      messages.append(message)
+      
+      if (mediaItem.image == nil) {
+        photoMessageMap[key] = mediaItem
       }
+      
+      collectionView.reloadData()
     }
   }
   
-  //MARK: ViewController lifecycle
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.inputBar.backgroundColor = UIColor.clear
-    self.view.layoutIfNeeded()
-    NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.showKeyboard(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+  // MARK: UITextViewDelegate methods
+  
+  override func textViewDidChange(_ textView: UITextView) {
+    super.textViewDidChange(textView)
+    // If the text is not empty, the user is typing
+    isTyping = textView.text != ""
   }
   
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    NotificationCenter.default.removeObserver(self)
-    Message.markMessagesRead(forUserID: self.currentUser!.id)
+}
+
+// MARK: Image Picker Delegate
+extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController,
+                             didFinishPickingMediaWithInfo info: [String : Any]) {
+    
+    picker.dismiss(animated: true, completion:nil)
+    
+    // 1
+    if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL {
+      // Handle picking a Photo from the Photo Library
+      // 2
+      let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl], options: nil)
+      let asset = assets.firstObject
+      
+      // 3
+      if let key = sendPhotoMessage() {
+        // 4
+        asset?.requestContentEditingInput(with: nil, completionHandler: { (contentEditingInput, info) in
+          let imageFileURL = contentEditingInput?.fullSizeImageURL
+          
+          // 5
+          let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
+          
+          // 6
+          self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil) { (metadata, error) in
+            if let error = error {
+              print("Error uploading photo: \(error.localizedDescription)")
+              return
+            }
+            // 7
+            self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
+          }
+        })
+      }
+    } else {
+      // Handle picking a Photo from the Camera - TODO
+    }
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.customization()
-    self.fetchData()
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    picker.dismiss(animated: true, completion:nil)
   }
 }
