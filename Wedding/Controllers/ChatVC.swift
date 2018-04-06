@@ -28,6 +28,13 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
   override var canBecomeFirstResponder: Bool{
     return true
   }
+  
+  lazy var leftButton: UIBarButtonItem = {
+    let image = UIImage.init(named: "default profile")?.withRenderingMode(.alwaysOriginal)
+    let button  = UIBarButtonItem.init(image: image, style: .plain, target: self, action: #selector(ChatVC.showProfile))
+    return button
+  }()
+  
   let locationManager = CLLocationManager()
   var items = [Message]()
   let imagePicker = UIImagePickerController()
@@ -43,18 +50,13 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.contentInset.bottom = self.barHeight
     self.tableView.scrollIndicatorInsets.bottom = self.barHeight
-    self.navigationItem.title = self.currentUser?.name
-    self.navigationItem.setHidesBackButton(true, animated: false)
-    let icon = UIImage.init(named: "back")?.withRenderingMode(.alwaysOriginal)
-    let backButton = UIBarButtonItem.init(image: icon!, style: .plain, target: self, action: #selector(self.dismissSelf))
-    self.navigationItem.leftBarButtonItem = backButton
+    self.navigationItem.title = "Wedding Party"
+    self.navigationItem.leftBarButtonItem = leftButton
     self.locationManager.delegate = self
   }
   
   //Downloads messages
   func fetchData() {
-    
-    print("Fetching data for the current user:", currentUser!.email)
     
     Message.downloadAllMessages(forUserID: self.currentUser!.id, completion: {[weak weakSelf = self] (message) in
       weakSelf?.items.append(message)
@@ -67,6 +69,13 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
       }
     })
     Message.markMessagesRead(forUserID: self.currentUser!.id)
+  }
+  
+  //Shows profile extra view
+  @objc func showProfile() {
+    let info = ["viewType" : ShowExtraView.profile]
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showExtraView"), object: nil, userInfo: info)
+    self.inputView?.isHidden = true
   }
   
   //Hides current viewcontroller
@@ -302,6 +311,6 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
   override func viewDidLoad() {
     super.viewDidLoad()
     self.customization()
-    self.fetchData()
+//    self.fetchData()
   }
 }
