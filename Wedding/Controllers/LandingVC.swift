@@ -20,7 +20,7 @@ class LandingVC: UIViewController {
   //MARK: Push to relevant ViewController
   func pushTo(viewController: ViewControllerType)  {
     switch viewController {
-    case .conversations:
+    case .channels:
       let vc = self.storyboard?.instantiateViewController(withIdentifier: "Navigation") as! NavVC
       self.present(vc, animated: false, completion: nil)
     case .welcome:
