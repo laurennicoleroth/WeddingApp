@@ -7,10 +7,23 @@
 //
 
 import Foundation
+import UIKit
 
 class Message {
+  var owner: MessageOwner
+  var type: MessageType
+  var content: Any
+  var timestamp: Int
+  var isRead: Bool
+  var image: UIImage?
   
-  init() {
-    
+  
+  //MARK: Inits
+  init(type: MessageType, content: Any, owner: MessageOwner, timestamp: Int, isRead: Bool) {
+    self.type = type
+    self.content = content
+    self.owner = owner
+    self.timestamp = timestamp
+    self.isRead = isRead
   }
 }
