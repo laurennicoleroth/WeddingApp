@@ -55,7 +55,8 @@ final class ChatVC: JSQMessagesViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.senderId = Auth.auth().currentUser?.uid
-    observeMessages()
+
+    observeMessagesForChannel()
     
     // No avatars
     collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
@@ -132,6 +133,10 @@ final class ChatVC: JSQMessagesViewController {
   }
   
   // MARK: Firebase related methods
+  
+  func observeMessagesForChannel() {
+    Message.observeMessages(forChannelID: "-L9c6PDRCfwYJbJySs1H")
+  }
   
   private func observeMessages() {
     messageRef = channelRef!.child("messages")

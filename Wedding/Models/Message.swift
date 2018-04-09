@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class Message {
   var owner: MessageOwner
@@ -16,6 +18,23 @@ class Message {
   var timestamp: Int
   var isRead: Bool
   var image: UIImage?
+  
+  //MARK: Methods
+  class func observeMessages(forChannelID: String) {
+    let channelRef = Database.database().reference().child("channels").child(forChannelID)
+    channelRef.observe(.value, with: { (snapshot) in
+      if snapshot.exists() {
+        let receivedMessage = snapshot.value as! [String: Any]
+        let messageType = receivedMessage["type"]
+        print(messageType)
+        //TODO: finish implementing observer of all messages for channel
+      }
+    })
+  }
+  
+  class func send(message: Message, toChannel: String) {
+    print("Sending message:", message)
+  }
   
   
   //MARK: Inits
