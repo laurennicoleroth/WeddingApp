@@ -83,13 +83,12 @@
                                 </accessibility>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSu-34-603">
-                                <rect key="frame" x="97.5" y="627" width="180" height="30"/>
+                                <rect key="frame" x="109.5" y="627" width="156" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="180" id="4pM-xv-nry"/>
                                     <constraint firstAttribute="height" constant="30" id="hQO-Bn-Ccf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
-                                <state key="normal" title="Create New Account">
+                                <state key="normal" title="Create An Account">
                                     <color key="titleColor" red="0.63137254899999995" green="0.44705882349999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -763,13 +762,13 @@
         <!--Channel List View Controller-->
         <scene sceneID="XRb-87-6dQ">
             <objects>
-                <tableViewController id="bZI-ze-zII" customClass="ChannelListViewController" customModule="ChatChat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="bZI-ze-zII" customClass="ChannelListViewController" customModule="Wedding" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ITQ-nu-6Tg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewChannel" id="pM6-GJ-REJ" customClass="CreateChannelCell" customModule="ChatChat" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewChannel" id="pM6-GJ-REJ" customClass="CreateChannelCell" customModule="Wedding" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pM6-GJ-REJ" id="Mgc-fL-zzk">
@@ -800,8 +799,8 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="pmX-Nx-wBM"/>
                                             <exclude reference="aGl-jH-UF7"/>
+                                            <exclude reference="pmX-Nx-wBM"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>

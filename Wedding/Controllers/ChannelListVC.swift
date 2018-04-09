@@ -38,12 +38,11 @@ class ChannelListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    print(Auth.auth().currentUser?.displayName, "is logged in")
-    
+
     customization()
     
-    observeChannels()
+//    observeChannels()
+    fetchData()
   }
   
   deinit {
@@ -58,6 +57,14 @@ class ChannelListViewController: UITableViewController {
     title = "Wedding Party"
 
     self.navigationItem.leftBarButtonItem = self.leftButton
+  }
+  
+  //Downloads conversations
+  func fetchData() {
+    Channel.showChannels { (channels) in
+      self.channels = channels
+      self.tableView.reloadData()
+    }
   }
   
   // MARK :Actions
@@ -80,7 +87,7 @@ class ChannelListViewController: UITableViewController {
       let channelData = snapshot.value as! Dictionary<String, AnyObject>
       let id = snapshot.key
       if let name = channelData["name"] as! String!, name.count > 0 {
-        self.channels.append(Channel(id: id, name: name))
+        
         self.tableView.reloadData()
       } else {
         print("Error! Could not decode channel data")
@@ -95,8 +102,8 @@ class ChannelListViewController: UITableViewController {
     if let channel = sender as? Channel {
       let chatVc = segue.destination as! ChatVC
  
-      if let currentUserName = Auth.auth().currentUser?.displayName {
-        chatVc.senderDisplayName = currentUserName
+      if let currentUserEmail = Auth.auth().currentUser?.email {
+        chatVc.senderDisplayName = currentUserEmail
       } else {
         chatVc.senderDisplayName = "Not Set"
       }

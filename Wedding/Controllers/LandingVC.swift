@@ -32,13 +32,16 @@ class LandingVC: UIViewController {
   //MARK: Check if user is signed in or not
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    
     if let userInformation = UserDefaults.standard.dictionary(forKey: "userInformation") {
+      
       let email = userInformation["email"] as! String
       let password = userInformation["password"] as! String
+
       User.loginUser(withEmail: email, password: password, completion: { [weak weakSelf = self] (status) in
         DispatchQueue.main.async {
           if status == true {
-            weakSelf?.pushTo(viewController: .conversations)
+            weakSelf?.pushTo(viewController: .channels)
           } else {
             weakSelf?.pushTo(viewController: .welcome)
           }
