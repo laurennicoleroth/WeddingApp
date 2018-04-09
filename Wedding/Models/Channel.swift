@@ -22,7 +22,6 @@ class Channel {
     channelsRef.observe(.childAdded, with: { (snapshot) -> Void in
       if snapshot.exists() {
         let fromID = snapshot.key
-        print(snapshot.value as! [String: Any])
         let values = snapshot.value as! [String: Any]
         let name = values["name"]
         channels.append(Channel(id: fromID, name: name as! String))

@@ -40,8 +40,7 @@ class ChannelListViewController: UITableViewController {
     super.viewDidLoad()
 
     customization()
-    
-//    observeChannels()
+
     fetchData()
   }
   
