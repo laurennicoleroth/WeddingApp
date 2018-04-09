@@ -61,7 +61,7 @@ class ChannelListViewController: UITableViewController {
   
   //Downloads conversations
   func fetchData() {
-    Channel.showChannels { (channels) in
+    Channel.showChannels() { (channels) in
       self.channels = channels
       self.tableView.reloadData()
     }

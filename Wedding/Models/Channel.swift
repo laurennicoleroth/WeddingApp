@@ -16,14 +16,17 @@ class Channel {
   internal let name: String
   
   class func showChannels(completion: @escaping ([Channel]) -> Swift.Void) {
+    let channelsRef = Database.database().reference().child("channels")
     var channels = [Channel]()
     
-    Database.database().reference().child("channels").observe(.childAdded, with: { (snapshot) in
+    channelsRef.observe(.childAdded, with: { (snapshot) -> Void in
       if snapshot.exists() {
         let fromID = snapshot.key
-        let value = snapshot.value as! [String: String]
-        
-        print("FromID \(fromID), \(value)")
+        print(snapshot.value as! [String: Any])
+        let values = snapshot.value as! [String: Any]
+        let name = values["name"]
+        channels.append(Channel(id: fromID, name: name as! String))
+        completion(channels)
       }
     })
   }
